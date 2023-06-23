@@ -9,7 +9,7 @@ export const Header = () => {
           <img width="38" src={logoSvg} alt="Pizza logo" />
           <div>
             <h1>React Pizza</h1>
-            <p>Пицца, которой равной в мире нет</p>
+            <p>Пицца, которой равных в мире нет</p>
           </div>
         </div>
         <div className="header__cart">
