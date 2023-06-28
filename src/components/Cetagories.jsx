@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 
-export const Categories = () => {
-  const [activeIndex, setActiveIndex] = useState(0)
+export const Categories = (props) => {
+  const { activeIndex, choiseActivIdx } = props
 
   const categoriesName = [
     'Все',
@@ -11,10 +11,6 @@ export const Categories = () => {
     'Острые',
     'Закрытые',
   ]
-
-  const choiseActivIdx = (index) => {
-    setActiveIndex(index)
-  }
 
   return (
     <div className="categories">
