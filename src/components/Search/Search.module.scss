@@ -1,0 +1,38 @@
+.root {
+  position: relative;
+}
+
+.input {
+  border: 1px solid rgba($color: #000000, $alpha: 0.1);
+  padding: 12px 33px;
+  width: 400px;
+  border-radius: 10px;
+  font-size: 16px;
+
+  &:focus {
+    border: 1px solid rgba($color: #000000, $alpha: 0.4);
+  }
+}
+
+.iconFind {
+  width: 20px;
+  height: 30px;
+  opacity: 0.5;
+  position: absolute;
+  top: 9px;
+  left: 8px;
+}
+
+.iconClose {
+  width: 17px;
+  height: 17px;
+  opacity: 0.5;
+  position: absolute;
+  top: 15px;
+  right: 12px;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 1;
+  }
+}
