@@ -1,10 +1,10 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { choiseCategoryInd } from '../redux/slices/filterSlices'
+import { choiseCategory } from '../redux/slices/filterSlices'
 
 export const Categories = () => {
   const dispatch = useDispatch()
-  const categoryActId = useSelector((state) => state.filters.activeCategoryInd)
+  const categoryActObj = useSelector((state) => state.filters.activeCategory)
 
   const categoriesName = [
     'Все',
@@ -21,8 +21,8 @@ export const Categories = () => {
         {categoriesName.map((item, ind) => (
           <li
             key={item}
-            onClick={() => dispatch(choiseCategoryInd(ind))}
-            className={categoryActId === ind ? 'active' : ''}
+            onClick={() => dispatch(choiseCategory({ name: item, index: ind }))}
+            className={categoryActObj.index === ind ? 'active' : ''}
           >
             {item}
           </li>

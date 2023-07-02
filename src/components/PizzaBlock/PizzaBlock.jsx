@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import styles from './PizzaBlock.module.scss'
 
 export const PizzaBlock = (props) => {
   const { title, price, imageUrl, sizes, types } = props
@@ -15,15 +16,15 @@ export const PizzaBlock = (props) => {
   }
 
   return (
-    <div className="pizza-block">
-      <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
-      <h4 className="pizza-block__title">{title}</h4>
-      <div className="pizza-block__selector">
+    <div className={styles.root}>
+      <img className={styles.root_image} src={imageUrl} alt="Pizza" />
+      <h4 className={styles.root_title}>{title}</h4>
+      <div className={styles.root_selector}>
         <ul>
           {types.map((type) => (
             <li
               key={type}
-              className={activeType === type ? 'active' : ''}
+              className={`${activeType === type ? styles.active : ''}`}
               onClick={() => choiseType(type)}
             >
               {typesMass[type]}
@@ -34,7 +35,7 @@ export const PizzaBlock = (props) => {
           {sizes.map((size) => (
             <li
               key={size}
-              className={activeSize === size ? 'active' : ''}
+              className={`${activeSize === size ? styles.active : ''}`}
               onClick={() => choiseSize(size)}
             >
               {size} см.
@@ -42,8 +43,8 @@ export const PizzaBlock = (props) => {
           ))}
         </ul>
       </div>
-      <div className="pizza-block__bottom">
-        <div className="pizza-block__price">от {price} ₽</div>
+      <div className={styles.root_bottom}>
+        <div className={styles.root_price}>от {price} ₽</div>
         <div className="button button--outline button--add">
           <svg
             width="12"
