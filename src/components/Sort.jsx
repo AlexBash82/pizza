@@ -2,18 +2,18 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { choiseSortObj } from '../redux/slices/filterSlices'
 
+export const sortList = [
+  { name: 'популярности возр', sortProp: 'rating' },
+  { name: 'популярности убыв', sortProp: '-rating' },
+  { name: 'цене возр', sortProp: 'price' },
+  { name: 'цене убыв', sortProp: '-price' },
+  { name: 'алфавиту возр', sortProp: 'title' },
+  { name: 'алфавиту убыв', sortProp: '-title' },
+]
+
 export const Sort = () => {
   const dispatch = useDispatch()
   const sortActObj = useSelector((state) => state.filters.sort)
-
-  const list = [
-    { name: 'популярности возр', sortProp: 'rating' },
-    { name: 'популярности убыв', sortProp: '-rating' },
-    { name: 'цене возр', sortProp: 'price' },
-    { name: 'цене убыв', sortProp: '-price' },
-    { name: 'алфавиту возр', sortProp: 'title' },
-    { name: 'алфавиту убыв', sortProp: '-title' },
-  ]
   const [isOpen, setIsOpen] = useState(false)
 
   const choiseActive = (obj) => {
@@ -42,7 +42,7 @@ export const Sort = () => {
       {isOpen && (
         <div className="sort__popup">
           <ul>
-            {list.map((obj) => (
+            {sortList.map((obj) => (
               <li
                 key={obj.name}
                 className={sortActObj.name === obj.name ? 'active' : ''}
