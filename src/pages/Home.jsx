@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState, useContext, useRef } from 'react'
 import qs from 'qs'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
@@ -19,7 +19,6 @@ export const Home = () => {
   const { searchValue } = useContext(MyContext)
   const [allPizzasMas, setAllPizzasMas] = useState([])
   const [isLoading, setIsLoading] = useState(true)
-  //const [currentPage, setCurrentPage] = useState(1)
   const currentPage = useSelector((state) => state.filters.openedPage)
   const categoryActId = useSelector(
     (state) => state.filters.activeCategory.index
@@ -28,20 +27,9 @@ export const Home = () => {
     (state) => state.filters.activeCategory.name
   )
   const sortActStr = useSelector((state) => state.filters.sort.sortProp)
+  const firstMount = useRef(true)
 
-  useEffect(() => {
-    const params = qs.parse(window.location.search.substring(1))
-    const sort = sortList.find((obj) => obj.sortProp === params.sortActStr)
-    const category = categoriesName.find(
-      (obj) => obj.index === Number(params.categoryActId)
-    )
-    console.log(params)
-    console.log(sort)
-    console.log(category)
-    //dispatch(setParam(...params, sort))
-  }, [])
-
-  useEffect(() => {
+  const fetchPizzas = () => {
     setIsLoading(true)
     const category = categoryActId > 0 ? `category=${categoryActId}` : ''
     const sortBy = sortActStr.replace('-', '')
@@ -66,18 +54,40 @@ export const Home = () => {
         setAllPizzasMas(res.data)
         setIsLoading(false)
       })
+  }
 
-    window.scrollTo(0, 0)
-  }, [categoryActId, sortActStr, searchValue, currentPage])
+  //****************если в поисковой строке что то есть - диспатчим это в стэйт
+  useEffect(() => {
+    if (window.location.search) {
+      //console.log('dispatching from search line')
+      const params = qs.parse(window.location.search.substring(1))
+      const sort = sortList.find((obj) => obj.sortProp === params.sortActStr)
+      const activeCategory = categoriesName.find(
+        (obj) => obj.index === Number(params.categoryActId)
+      )
+
+      dispatch(setParam({ ...params, sort, activeCategory }))
+    }
+  }, [])
 
   useEffect(() => {
-    const queryString = qs.stringify({
-      categoryActId,
-      sortActStr,
-      currentPage,
-    })
+    //console.log('i am going to back-end')
+    fetchPizzas()
+    window.scrollTo(0, 0)
+  }, [categoryActId, sortActStr, currentPage, searchValue])
 
-    navigate(`?${queryString}`)
+  //******************преобразуем данные из стейта в строку и вбиваем в поисовую строку
+  useEffect(() => {
+    if (!firstMount.current) {
+      //console.log('put state in search line')
+      const queryString = qs.stringify({
+        categoryActId,
+        sortActStr,
+        currentPage,
+      })
+      navigate(`?${queryString}`)
+    }
+    firstMount.current = false
   }, [categoryActId, sortActStr, currentPage])
 
   const skeletons = [...new Array(4)].map((_, idx) => <Skeleton key={idx} />)

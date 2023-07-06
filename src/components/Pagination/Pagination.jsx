@@ -14,9 +14,7 @@ export const Pagination = () => {
         breakLabel="..."
         nextLabel=">"
         onPageChange={(event) => dispatch(switchOpenedPage(++event.selected))}
-        //pageRangeDisplayed={15}
         pageCount={3}
-        //pageCount={pageCount}
         previousLabel="<"
         renderOnZeroPageCount={null}
       />

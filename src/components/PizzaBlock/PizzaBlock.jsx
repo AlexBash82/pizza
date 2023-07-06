@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
 import styles from './PizzaBlock.module.scss'
+import { useDispatch } from 'react-redux'
+import { addPizzas } from '../../redux/slices/cartSlices'
 
 export const PizzaBlock = (props) => {
+  const dispatch = useDispatch()
   const { title, price, imageUrl, sizes, types } = props
   const typesMass = ['тонкое', 'традиционное']
   const [activeType, setActiveTipe] = useState(types[0])
@@ -45,7 +48,20 @@ export const PizzaBlock = (props) => {
       </div>
       <div className={styles.root_bottom}>
         <div className={styles.root_price}>от {price} ₽</div>
-        <div className="button button--outline button--add">
+        <div
+          className="button button--outline button--add"
+          onClick={() =>
+            dispatch(
+              addPizzas({
+                name: title,
+                type: typesMass[activeType],
+                size: activeSize,
+                price: price,
+                items: 1,
+              })
+            )
+          }
+        >
           <svg
             width="12"
             height="12"
