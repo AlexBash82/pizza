@@ -10,7 +10,8 @@ const initialState = {
 //     "type":"тонкое",
 //     "size":30,
 //     "price":580,
-//     "items":1}
+//     "items":1,
+//     "image": imageUrl}
 //  ]
 
 const cartSlice = createSlice({

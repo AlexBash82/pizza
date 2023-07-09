@@ -43,6 +43,11 @@ body {
       }
     }
   }
+
+  &__error-info {
+    margin: 60px auto;
+    text-align: center;
+  }
 }
 
 .container {

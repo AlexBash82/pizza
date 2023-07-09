@@ -3,22 +3,23 @@ import qs from 'qs'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { MyContext } from '../App'
-import axios from 'axios'
 import { useDispatch } from 'react-redux'
 import { setParam } from '../redux/slices/filterSlices'
+import { fetchPizzas } from '../redux/slices/pizzaSlice'
 import { Categories, categoriesName } from '../components/Cetegories'
 import { PizzaBlock } from '../components/PizzaBlock/PizzaBlock'
 import { Sort, sortList } from '../components/Sort'
 import { Skeleton } from '../components/Skeleton'
 import { Pagination } from '../components/Pagination/Pagination'
-//import allPizzasMas from './assets/pizzas.json'
 
 export const Home = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { searchValue } = useContext(MyContext)
-  const [allPizzasMas, setAllPizzasMas] = useState([])
-  const [isLoading, setIsLoading] = useState(true)
+  const allPizzasMas = useSelector((state) => state.pizza.items)
+  const fetchStatus = useSelector((state) => state.pizza.status)
+  //const [allPizzasMas, setAllPizzasMas] = useState([])
+  //const [isLoading, setIsLoading] = useState(true)
   const currentPage = useSelector((state) => state.filters.openedPage)
   const categoryActId = useSelector(
     (state) => state.filters.activeCategory.index
@@ -29,8 +30,8 @@ export const Home = () => {
   const sortActStr = useSelector((state) => state.filters.sort.sortProp)
   const firstMount = useRef(true)
 
-  const fetchPizzas = () => {
-    setIsLoading(true)
+  const getPizzas = () => {
+    //setIsLoading(true)
     const category = categoryActId > 0 ? `category=${categoryActId}` : ''
     const sortBy = sortActStr.replace('-', '')
     const order = sortActStr.includes('-') ? 'desc' : 'asc'
@@ -41,19 +42,35 @@ export const Home = () => {
     // )
     //   .then((res) => res.json())
     //   .then((json) => {
-    //     //console.log('resieved json', json)
     //     setAllPizzasMas(json)
     //     setIsLoading(false)
     //   })
 
-    axios
-      .get(
-        `https://6494bfc10da866a9536828d5.mockapi.io/pizzas?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
-      )
-      .then((res) => {
-        setAllPizzasMas(res.data)
-        setIsLoading(false)
-      })
+    // axios
+    //   .get(
+    //     `https://6494bfc10da866a9536828d5.mockapi.io/pizzas?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
+    //   )
+    //   .then((res) => {
+    //     setAllPizzasMas(res.data)
+    //     setIsLoading(false)
+    //   })
+    //   .catch((err) => {
+    //     setIsLoading(false)
+    //     console.log(err.message)
+    //   })
+
+    // try {
+    //   const { data } = await axios.get(
+    //     `https://6494bfc10da866a9536828d5.mockapi.io/pizzas?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
+    //   )
+    //   dispatch(getPizzas(data))
+    // } catch (err) {
+    //   console.log(err.message)
+    // } finally {
+    //   setIsLoading(false)
+    // }
+
+    dispatch(fetchPizzas({ category, sortBy, order, search, currentPage }))
   }
 
   //****************если в поисковой строке что то есть - диспатчим это в стэйт
@@ -72,7 +89,7 @@ export const Home = () => {
 
   useEffect(() => {
     //console.log('i am going to back-end')
-    fetchPizzas()
+    getPizzas()
     window.scrollTo(0, 0)
   }, [categoryActId, sortActStr, currentPage, searchValue])
 
@@ -92,6 +109,11 @@ export const Home = () => {
 
   const skeletons = [...new Array(4)].map((_, idx) => <Skeleton key={idx} />)
   const pizzas = allPizzasMas.map((obj) => <PizzaBlock key={obj.id} {...obj} />)
+  const errorBlock = (
+    <div className="content__error-info">
+      <h1>You have error with getting pizzas</h1>
+    </div>
+  )
 
   return (
     <>
@@ -100,7 +122,13 @@ export const Home = () => {
         <Sort />
       </div>
       <h2 className="content__title">{categoryActName}</h2>
-      <div className="content__items">{isLoading ? skeletons : pizzas}</div>
+      {fetchStatus === 'error' ? (
+        errorBlock
+      ) : (
+        <div className="content__items">
+          {fetchStatus === 'loading' ? skeletons : pizzas}
+        </div>
+      )}
       <Pagination />
     </>
   )

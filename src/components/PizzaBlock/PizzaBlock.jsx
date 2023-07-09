@@ -73,6 +73,7 @@ export const PizzaBlock = (props) => {
                 size: activeSize,
                 price: price,
                 items: 1,
+                image: imageUrl,
               })
             )
           }
@@ -90,7 +91,7 @@ export const PizzaBlock = (props) => {
             />
           </svg>
           <span>Добавить</span>
-          <i>{amountPizzas()}</i>
+          {amountPizzas() > 0 && <i>{amountPizzas()}</i>}
         </div>
       </div>
     </div>

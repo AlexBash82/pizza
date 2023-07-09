@@ -3,12 +3,18 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { CartIem } from '../components/CartItem/CartIem'
 import { delAllPizzas } from '../redux/slices/cartSlices'
+import { CartEmpty } from '../components/CartItem/CartEmpty'
 
 export const Cart = () => {
   const dispatch = useDispatch()
   const listCartPizzas = useSelector((state) => state.cart.totalPizzas)
   const totalCartItems = useSelector((state) => state.cart.totalItems)
   const totalCartPrice = useSelector((state) => state.cart.totalPrice)
+
+  console.log(listCartPizzas.length)
+  if (listCartPizzas.length <= 0) {
+    return <CartEmpty />
+  }
 
   return (
     <div className="cart">

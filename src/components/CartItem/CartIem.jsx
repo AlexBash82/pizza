@@ -12,11 +12,7 @@ export const CartIem = ({ info }) => {
     <div>
       <div className="cart__item">
         <div className="cart__item-img">
-          <img
-            className="pizza-block__image"
-            src="https://dodopizza-a.akamaihd.net/static/Img/Products/Pizza/ru-RU/b750f576-4a83-48e6-a283-5a8efb68c35d.jpg"
-            alt="Pizza"
-          />
+          <img className="pizza-block__image" src={info.image} alt="Pizza" />
         </div>
         <div className="cart__item-info">
           <h3>{info.name}</h3>
