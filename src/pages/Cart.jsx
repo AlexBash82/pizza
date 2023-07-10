@@ -2,16 +2,18 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { CartIem } from '../components/CartItem/CartIem'
-import { delAllPizzas } from '../redux/slices/cartSlices'
+import { cartSelector, delAllPizzas } from '../redux/slices/cartSlices'
 import { CartEmpty } from '../components/CartItem/CartEmpty'
 
 export const Cart = () => {
   const dispatch = useDispatch()
-  const listCartPizzas = useSelector((state) => state.cart.totalPizzas)
-  const totalCartItems = useSelector((state) => state.cart.totalItems)
-  const totalCartPrice = useSelector((state) => state.cart.totalPrice)
+  // const listCartPizzas = useSelector((state) => state.cart.listCartPizzas)
+  // const totalCartItems = useSelector((state) => state.cart.totalCartItems)
+  // const totalCartPrice = useSelector((state) => state.cart.totalCartPrice)
 
-  console.log(listCartPizzas.length)
+  const { listCartPizzas, totalCartItems, totalCartPrice } =
+    useSelector(cartSelector)
+
   if (listCartPizzas.length <= 0) {
     return <CartEmpty />
   }
@@ -132,7 +134,6 @@ export const Cart = () => {
           </div>
         </div>
       </div>
-      <div></div>
     </div>
   )
 }

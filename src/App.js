@@ -4,27 +4,21 @@ import { Home } from './pages/Home'
 import { NotFound } from './pages/NotFound'
 import { Cart } from './pages/Cart'
 import './scss/app.scss'
-import React, { useState } from 'react'
-
-export const MyContext = React.createContext()
+import React from 'react'
 
 function App() {
-  const [searchValue, setSearchValue] = useState('')
-
   return (
     <div className="wrapper">
-      <MyContext.Provider value={{ searchValue, setSearchValue }}>
-        <Header />
-        <div className="content">
-          <div className="container">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/Cart" element={<Cart />} />
-              <Route path="/*" element={<NotFound />} />
-            </Routes>
-          </div>
+      <Header />
+      <div className="content">
+        <div className="container">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/Cart" element={<Cart />} />
+            <Route path="/*" element={<NotFound />} />
+          </Routes>
         </div>
-      </MyContext.Provider>
+      </div>
     </div>
   )
 }

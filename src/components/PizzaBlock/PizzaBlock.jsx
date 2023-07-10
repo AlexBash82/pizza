@@ -5,7 +5,7 @@ import { addPizza } from '../../redux/slices/cartSlices'
 
 export const PizzaBlock = (props) => {
   const dispatch = useDispatch()
-  const cartTotalPizzas = useSelector((state) => state.cart.totalPizzas)
+  const cartTotalPizzas = useSelector((state) => state.cart.listCartPizzas)
   const { title, price, imageUrl, sizes, types } = props
   const typesMass = ['тонкое', 'традиционное']
   const [activeType, setActiveTipe] = useState(types[0])

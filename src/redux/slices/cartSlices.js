@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  totalItems: 0,
-  totalPrice: 0,
-  totalPizzas: [],
+  totalCartItems: 0,
+  totalCartPrice: 0,
+  listCartPizzas: [],
 }
-//  totalPizzas: [
+//  listCartPizzas: [
 //    {"name":"Крэйзи пепперони",
 //     "type":"тонкое",
 //     "size":30,
@@ -19,56 +19,57 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addPizza(state, action) {
-      const result = state.totalPizzas.findIndex(
+      const result = state.listCartPizzas.findIndex(
         (item) =>
           item.name === action.payload.name &&
           item.type === action.payload.type &&
           item.size === action.payload.size
       )
       if (result >= 0) {
-        state.totalPizzas[result].items++
+        state.listCartPizzas[result].items++
       } else {
-        state.totalPizzas.push(action.payload)
+        state.listCartPizzas.push(action.payload)
       }
-      state.totalItems++
-      state.totalPrice = state.totalPrice + action.payload.price
+      state.totalCartItems++
+      state.totalCartPrice = state.totalCartPrice + action.payload.price
     },
     subPizza(state, action) {
-      const result = state.totalPizzas.findIndex(
+      const result = state.listCartPizzas.findIndex(
         (item) =>
           item.name === action.payload.name &&
           item.type === action.payload.type &&
           item.size === action.payload.size
       )
       if (result >= 0) {
-        if (state.totalPizzas[result].items > 1) {
-          state.totalPizzas[result].items--
-          state.totalItems--
-          state.totalPrice = state.totalPrice - action.payload.price
+        if (state.listCartPizzas[result].items > 1) {
+          state.listCartPizzas[result].items--
+          state.totalCartItems--
+          state.totalCartPrice = state.totalCartPrice - action.payload.price
         }
       }
     },
     delPizza(state, action) {
-      const result = state.totalPizzas.findIndex(
+      const result = state.listCartPizzas.findIndex(
         (item) =>
           item.name === action.payload.name &&
           item.type === action.payload.type &&
           item.size === action.payload.size
       )
       if (result >= 0) {
-        state.totalPizzas.splice([result], 1)
-        state.totalItems = state.totalItems - action.payload.items
-        state.totalPrice =
-          state.totalPrice - action.payload.price * action.payload.items
+        state.listCartPizzas.splice([result], 1)
+        state.totalCartItems = state.totalCartItems - action.payload.items
+        state.totalCartPrice =
+          state.totalCartPrice - action.payload.price * action.payload.items
       }
     },
     delAllPizzas(state) {
-      state.totalItems = 0
-      state.totalPrice = 0
-      state.totalPizzas = []
+      state.totalCartItems = 0
+      state.totalCartPrice = 0
+      state.listCartPizzas = []
     },
   },
 })
 
+export const cartSelector = (state) => state.cart
 export const { addPizza, subPizza, delPizza, delAllPizzas } = cartSlice.actions
 export default cartSlice.reducer

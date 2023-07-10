@@ -2,7 +2,6 @@ import React, { useEffect, useState, useContext, useRef } from 'react'
 import qs from 'qs'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { MyContext } from '../App'
 import { useDispatch } from 'react-redux'
 import { setParam } from '../redux/slices/filterSlices'
 import { fetchPizzas } from '../redux/slices/pizzaSlice'
@@ -15,11 +14,8 @@ import { Pagination } from '../components/Pagination/Pagination'
 export const Home = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { searchValue } = useContext(MyContext)
   const allPizzasMas = useSelector((state) => state.pizza.items)
   const fetchStatus = useSelector((state) => state.pizza.status)
-  //const [allPizzasMas, setAllPizzasMas] = useState([])
-  //const [isLoading, setIsLoading] = useState(true)
   const currentPage = useSelector((state) => state.filters.openedPage)
   const categoryActId = useSelector(
     (state) => state.filters.activeCategory.index
@@ -28,10 +24,10 @@ export const Home = () => {
     (state) => state.filters.activeCategory.name
   )
   const sortActStr = useSelector((state) => state.filters.sort.sortProp)
+  const searchValue = useSelector((state) => state.filters.searchValue)
   const firstMount = useRef(true)
 
   const getPizzas = () => {
-    //setIsLoading(true)
     const category = categoryActId > 0 ? `category=${categoryActId}` : ''
     const sortBy = sortActStr.replace('-', '')
     const order = sortActStr.includes('-') ? 'desc' : 'asc'

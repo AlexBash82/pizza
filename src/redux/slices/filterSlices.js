@@ -10,6 +10,7 @@ const initialState = {
     sortProp: 'rating',
   },
   openedPage: 1,
+  searchValue: '',
 }
 
 const filterSlice = createSlice({
@@ -30,9 +31,17 @@ const filterSlice = createSlice({
       state.sort = action.payload.sort
       state.openedPage = Number(action.payload.currentPage)
     },
+    setSearchValue(state, action) {
+      state.searchValue = action.payload
+    },
   },
 })
 
-export const { choiseCategory, choiseSortObj, switchOpenedPage, setParam } =
-  filterSlice.actions
+export const {
+  choiseCategory,
+  choiseSortObj,
+  switchOpenedPage,
+  setParam,
+  setSearchValue,
+} = filterSlice.actions
 export default filterSlice.reducer
