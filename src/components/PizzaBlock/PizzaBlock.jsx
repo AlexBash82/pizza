@@ -2,11 +2,12 @@ import React, { useState } from 'react'
 import styles from './PizzaBlock.module.scss'
 import { useDispatch, useSelector } from 'react-redux'
 import { addPizza } from '../../redux/slices/cartSlices'
+import { Link } from 'react-router-dom'
 
 export const PizzaBlock = (props) => {
+  const { title, price, imageUrl, sizes, types, id } = props
   const dispatch = useDispatch()
   const cartTotalPizzas = useSelector((state) => state.cart.listCartPizzas)
-  const { title, price, imageUrl, sizes, types } = props
   const typesMass = ['тонкое', 'традиционное']
   const [activeType, setActiveTipe] = useState(types[0])
   const [activeSize, setActiveSize] = useState(sizes[0])
@@ -25,25 +26,19 @@ export const PizzaBlock = (props) => {
     return num
   }
 
-  const choiseType = (typeId) => {
-    setActiveTipe(typeId)
-  }
-
-  const choiseSize = (sizeId) => {
-    setActiveSize(sizeId)
-  }
-
   return (
     <div className={styles.root}>
-      <img className={styles.root_image} src={imageUrl} alt="Pizza" />
-      <h4 className={styles.root_title}>{title}</h4>
+      <Link to={`/profile/${id}`}>
+        <img className={styles.root_image} src={imageUrl} alt="Pizza" />
+        <h4 className={styles.root_title}>{title}</h4>
+      </Link>
       <div className={styles.root_selector}>
         <ul>
           {types.map((type) => (
             <li
               key={type}
               className={`${activeType === type ? styles.active : ''}`}
-              onClick={() => choiseType(type)}
+              onClick={() => setActiveTipe(type)}
             >
               {typesMass[type]}
             </li>
@@ -54,7 +49,7 @@ export const PizzaBlock = (props) => {
             <li
               key={size}
               className={`${activeSize === size ? styles.active : ''}`}
-              onClick={() => choiseSize(size)}
+              onClick={() => setActiveSize(size)}
             >
               {size} см.
             </li>

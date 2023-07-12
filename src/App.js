@@ -5,6 +5,7 @@ import { NotFound } from './pages/NotFound'
 import { Cart } from './pages/Cart'
 import './scss/app.scss'
 import React from 'react'
+import { Profile } from './pages/Profile/Profile'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <div className="container">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/profile/:id" element={<Profile />} />
             <Route path="/Cart" element={<Cart />} />
             <Route path="/*" element={<NotFound />} />
           </Routes>
