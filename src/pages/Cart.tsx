@@ -1,18 +1,18 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from '../hook'
 import { Link } from 'react-router-dom'
 import { CartIem } from '../components/CartItem/CartIem'
-import { cartSelector, delAllPizzas } from '../redux/slices/cartSlices'
+import { cartSelector, delAllPizzas } from '../redux/cart/cartSlice'
 import { CartEmpty } from '../components/CartItem/CartEmpty'
 
-export const Cart = () => {
-  const dispatch = useDispatch()
+export const Cart: React.FC = () => {
+  const dispatch = useAppDispatch()
   // const listCartPizzas = useSelector((state) => state.cart.listCartPizzas)
   // const totalCartItems = useSelector((state) => state.cart.totalCartItems)
   // const totalCartPrice = useSelector((state) => state.cart.totalCartPrice)
 
   const { listCartPizzas, totalCartItems, totalCartPrice } =
-    useSelector(cartSelector)
+    useAppSelector(cartSelector)
 
   if (listCartPizzas.length <= 0) {
     return <CartEmpty />

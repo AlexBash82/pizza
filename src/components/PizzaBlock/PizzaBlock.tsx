@@ -1,13 +1,23 @@
 import React, { useState } from 'react'
 import styles from './PizzaBlock.module.scss'
-import { useDispatch, useSelector } from 'react-redux'
-import { addPizza } from '../../redux/slices/cartSlices'
+import { useAppDispatch, useAppSelector } from '../../hook'
+import { addPizza } from '../../redux/cart/cartSlice'
 import { Link } from 'react-router-dom'
 
-export const PizzaBlock = (props) => {
+type TPizzaBlockPros = {
+  title: string
+  price: number
+  imageUrl: string
+  sizes: number[]
+  types: number[]
+  id: string
+}
+
+export const PizzaBlock: React.FC<TPizzaBlockPros> = (props) => {
   const { title, price, imageUrl, sizes, types, id } = props
-  const dispatch = useDispatch()
-  const cartTotalPizzas = useSelector((state) => state.cart.listCartPizzas)
+
+  const dispatch = useAppDispatch()
+  const cartTotalPizzas = useAppSelector((state) => state.cart.listCartPizzas)
   const typesMass = ['тонкое', 'традиционное']
   const [activeType, setActiveTipe] = useState(types[0])
   const [activeSize, setActiveSize] = useState(sizes[0])

@@ -1,30 +1,29 @@
 import React, { useEffect, useRef } from 'react'
 import qs from 'qs'
 import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import { useDispatch } from 'react-redux'
-import { setParam } from '../redux/slices/filterSlices'
-import { fetchPizzas } from '../redux/slices/pizzaSlice'
+import { useAppDispatch, useAppSelector } from '../hook'
+import { setParam } from '../redux/filter/filterSlice'
+import { fetchPizzas } from '../redux/pizza/asyncActions'
 import { Categories, categoriesName } from '../components/Cetegories'
 import { PizzaBlock } from '../components/PizzaBlock/PizzaBlock'
 import { Sort, sortList } from '../components/Sort'
 import { Skeleton } from '../components/Skeleton'
 import { Pagination } from '../components/Pagination/Pagination'
 
-export const Home = () => {
-  const dispatch = useDispatch()
+export const Home: React.FC = () => {
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const allPizzasMas = useSelector((state) => state.pizza.items)
-  const fetchStatus = useSelector((state) => state.pizza.status)
-  const currentPage = useSelector((state) => state.filters.openedPage)
-  const categoryActId = useSelector(
+  const allPizzasMas = useAppSelector((state) => state.pizza.items)
+  const fetchStatus = useAppSelector((state) => state.pizza.status)
+  const openedPage = useAppSelector((state) => state.filters.openedPage)
+  const categoryActId = useAppSelector(
     (state) => state.filters.activeCategory.index
   )
-  const categoryActName = useSelector(
+  const categoryActName = useAppSelector(
     (state) => state.filters.activeCategory.name
   )
-  const sortActStr = useSelector((state) => state.filters.sort.sortProp)
-  const searchValue = useSelector((state) => state.filters.searchValue)
+  const sortActStr = useAppSelector((state) => state.filters.sort.sortProp)
+  const searchValue = useAppSelector((state) => state.filters.searchValue)
   const firstMount = useRef(true)
 
   const getPizzas = () => {
@@ -33,6 +32,8 @@ export const Home = () => {
     const order = sortActStr.includes('-') ? 'desc' : 'asc'
     const search = searchValue ? `&search=${searchValue}` : ''
 
+    // *****вариант с fetch
+    //
     // fetch(
     //   `https://6494bfc10da866a9536828d5.mockapi.io/pizzas?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
     // )
@@ -42,6 +43,8 @@ export const Home = () => {
     //     setIsLoading(false)
     //   })
 
+    // *****вариант с axios
+    //
     // axios
     //   .get(
     //     `https://6494bfc10da866a9536828d5.mockapi.io/pizzas?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
@@ -55,6 +58,8 @@ export const Home = () => {
     //     console.log(err.message)
     //   })
 
+    // *****вариант с axios ant try-catch
+    //
     // try {
     //   const { data } = await axios.get(
     //     `https://6494bfc10da866a9536828d5.mockapi.io/pizzas?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
@@ -66,20 +71,35 @@ export const Home = () => {
     //   setIsLoading(false)
     // }
 
-    dispatch(fetchPizzas({ category, sortBy, order, search, currentPage }))
+    // *****вариант с выносом функции в redux: fetchPizzas()
+    //
+    dispatch(fetchPizzas({ category, sortBy, order, search, openedPage }))
   }
 
   //****************если в поисковой строке что то есть - диспатчим это в стэйт
   useEffect(() => {
     if (window.location.search) {
       //console.log('dispatching from search line')
-      const params = qs.parse(window.location.search.substring(1))
-      const sort = sortList.find((obj) => obj.sortProp === params.sortActStr)
-      const activeCategory = categoriesName.find(
-        (obj) => obj.index === Number(params.categoryActId)
-      )
+      const sortDefault = {
+        name: 'популярности возр',
+        sortProp: 'rating',
+      }
+      const activeCategoryDefault = {
+        name: 'Все',
+        index: 0,
+      }
 
-      dispatch(setParam({ ...params, sort, activeCategory }))
+      const params = qs.parse(window.location.search.substring(1))
+      const sort =
+        sortList.find((obj) => obj.sortProp === params.sortActStr) ||
+        sortDefault
+      const activeCategory =
+        categoriesName.find(
+          (obj) => obj.index === Number(params.categoryActId)
+        ) || activeCategoryDefault
+      const openedPage = Number(params.openedPage) || 1
+      const searchValue = params.searchValue?.toString() || ''
+      dispatch(setParam({ openedPage, sort, activeCategory, searchValue }))
     }
   }, [])
 
@@ -87,7 +107,7 @@ export const Home = () => {
     //console.log('i am going to back-end')
     getPizzas()
     window.scrollTo(0, 0)
-  }, [categoryActId, sortActStr, currentPage, searchValue])
+  }, [categoryActId, sortActStr, openedPage, searchValue])
 
   //******************преобразуем данные из стейта в строку и вбиваем в поисовую строку
   useEffect(() => {
@@ -96,12 +116,12 @@ export const Home = () => {
       const queryString = qs.stringify({
         categoryActId,
         sortActStr,
-        currentPage,
+        openedPage,
       })
       navigate(`?${queryString}`)
     }
     firstMount.current = false
-  }, [categoryActId, sortActStr, currentPage])
+  }, [categoryActId, sortActStr, openedPage])
 
   const skeletons = [...new Array(4)].map((_, idx) => <Skeleton key={idx} />)
   const pizzas = allPizzasMas.map((obj) => <PizzaBlock key={obj.id} {...obj} />)

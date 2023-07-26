@@ -1,6 +1,7 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { choiseCategory } from '../redux/slices/filterSlices'
+import { useAppDispatch, useAppSelector } from '../hook'
+import { choiseCategory } from '../redux/filter/filterSlice'
+//import { useWhyDidYouUpdate } from 'ahooks'
 
 export const categoriesName = [
   { name: 'Все', index: 0 },
@@ -11,9 +12,10 @@ export const categoriesName = [
   { name: 'Закрытые', index: 5 },
 ]
 
-export const Categories = () => {
-  const dispatch = useDispatch()
-  const categoryActObj = useSelector((state) => state.filters.activeCategory)
+export const Categories: React.FC = () => {
+  const dispatch = useAppDispatch()
+  const categoryActObj = useAppSelector((state) => state.filters.activeCategory)
+  //useWhyDidYouUpdate('Categories', categoryActObj)
 
   return (
     <div className="categories">

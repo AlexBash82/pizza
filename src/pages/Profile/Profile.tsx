@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from '../../hook'
 import styles from './Profile.module.scss'
 import axios from 'axios'
-import { addPizza } from '../../redux/slices/cartSlices'
+import { addPizza } from '../../redux/cart/cartSlice'
 
 export const Profile = () => {
-  //const params = useParams()
+  // Для получения динамических параметров - useParams
+  // Для не дин. - useSearchParam, useLocaion (.search - после знака "?")
+  // const params = useParams()
   // console.log(params)
   const { id } = useParams()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const initial = {
     id: '',
     imageUrl: '',
@@ -23,7 +25,7 @@ export const Profile = () => {
   const [profilePizza, setProfilePizza] = useState(initial)
   const [activeType, setActiveTipe] = useState(profilePizza.types[0])
   const [activeSize, setActiveSize] = useState(profilePizza.sizes[0])
-  const cartTotalPizzas = useSelector((state) => state.cart.listCartPizzas)
+  const cartTotalPizzas = useAppSelector((state) => state.cart.listCartPizzas)
   const navigate = useNavigate()
   const typesMass = ['тонкое', 'традиционное']
 
@@ -40,7 +42,7 @@ export const Profile = () => {
       }
     }
     fetchProfile()
-  }, [])
+  }, [id, navigate])
 
   const amountPizzas = () => {
     let num = 0
@@ -54,6 +56,10 @@ export const Profile = () => {
       num = cartTotalPizzas[index].items
     }
     return num
+  }
+
+  if (!profilePizza) {
+    return 'loading...'
   }
 
   return (

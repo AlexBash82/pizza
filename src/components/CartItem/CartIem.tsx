@@ -1,9 +1,22 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
-import { addPizza, delPizza, subPizza } from '../../redux/slices/cartSlices'
+import { useAppDispatch } from '../../hook'
+import { addPizza, delPizza, subPizza } from '../../redux/cart/cartSlice'
 
-export const CartIem = ({ info }) => {
-  const dispatch = useDispatch()
+type TInfoItem = {
+  items: number
+  price: number
+  image: string
+  name: string
+  type: string
+  size: number
+}
+
+type TCartIemProps = {
+  info: TInfoItem
+}
+
+export const CartIem: React.FC<TCartIemProps> = ({ info }) => {
+  const dispatch = useAppDispatch()
   const sum = () => {
     return info.items * info.price
   }
@@ -22,7 +35,9 @@ export const CartIem = ({ info }) => {
         </div>
         <div className="cart__item-count">
           <div
-            className="button button--outline button--circle cart__item-count-minus"
+            className={`button button--outline button--circle cart__item-count-minus ${
+              info.items === 1 ? 'disabled-minus' : ''
+            }`}
             onClick={() => dispatch(subPizza(info))}
           >
             <svg

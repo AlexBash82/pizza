@@ -1,8 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { choiseSortObj } from '../redux/slices/filterSlices'
+import { useAppDispatch, useAppSelector } from '../hook'
+import { choiseSortObj } from '../redux/filter/filterSlice'
 
-export const sortList = [
+type TSortItem = {
+  name: string
+  sortProp: 'rating' | '-rating' | 'price' | '-price' | 'title' | '-title'
+}
+
+export const sortList: TSortItem[] = [
   { name: 'популярности возр', sortProp: 'rating' },
   { name: 'популярности убыв', sortProp: '-rating' },
   { name: 'цене возр', sortProp: 'price' },
@@ -12,19 +17,19 @@ export const sortList = [
 ]
 
 export const Sort = () => {
-  const dispatch = useDispatch()
-  const sortActObj = useSelector((state) => state.filters.sort)
+  const dispatch = useAppDispatch()
+  const sortActObj = useAppSelector((state) => state.filters.sort)
   const [isOpen, setIsOpen] = useState(false)
-  const sortRef = useRef()
+  const sortRef = useRef<HTMLDivElement>(null)
 
-  const choiseActive = (obj) => {
+  const choiseActive = (obj: TSortItem) => {
     dispatch(choiseSortObj(obj))
     setIsOpen(false)
   }
 
   useEffect(() => {
-    const clickOutside = (event) => {
-      if (!event.composedPath().includes(sortRef.current)) {
+    const clickOutside = (event: MouseEvent) => {
+      if (sortRef.current && !event.composedPath().includes(sortRef.current)) {
         setIsOpen(false)
       }
     }

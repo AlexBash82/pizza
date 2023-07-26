@@ -1,13 +1,21 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
 import logoSvg from '../assets/img/pizza-logo.svg'
 import { Search } from './Search/Search'
-import { cartSelector } from '../redux/slices/cartSlices'
+import { cartSelector } from '../redux/cart/cartSlice'
 
-export const Header = () => {
+export const Header: React.FC = () => {
   const location = useLocation()
-  const { totalCartItems, totalCartPrice } = useSelector(cartSelector)
+  const { totalCartItems, totalCartPrice, listCartPizzas } =
+    useSelector(cartSelector)
+
+  useEffect(() => {
+    if (listCartPizzas.length) {
+      const json = JSON.stringify(listCartPizzas)
+      localStorage.setItem('cart', json)
+    }
+  }, [listCartPizzas])
 
   return (
     <div className="header">
