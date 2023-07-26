@@ -7,7 +7,14 @@
   width: 280px;
 
   &_image {
-    width: 260px;
+    width: 280px;
+    padding: 10px 0 0 10px;
+    transition: transform 500ms cubic-bezier(0, 0.75, 0.79, 1.05) 0s;
+    border-radius: 130px;
+
+    &:hover {
+      transform: rotate(0.1turn);
+    }
   }
 
   &_title {

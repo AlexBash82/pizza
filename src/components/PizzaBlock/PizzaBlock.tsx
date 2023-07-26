@@ -40,8 +40,8 @@ export const PizzaBlock: React.FC<TPizzaBlockPros> = (props) => {
     <div className={styles.root}>
       <Link to={`/profile/${id}`}>
         <img className={styles.root_image} src={imageUrl} alt="Pizza" />
-        <h4 className={styles.root_title}>{title}</h4>
       </Link>
+      <h4 className={styles.root_title}>{title}</h4>
       <div className={styles.root_selector}>
         <ul>
           {types.map((type) => (
