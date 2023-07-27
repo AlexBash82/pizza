@@ -16,7 +16,7 @@ export const sortList: TSortItem[] = [
   { name: 'алфавиту убыв', sortProp: '-title' },
 ]
 
-export const Sort = () => {
+export const Sort: React.FC = () => {
   const dispatch = useAppDispatch()
   const sortActObj = useAppSelector((state) => state.filters.sort)
   const [isOpen, setIsOpen] = useState(false)

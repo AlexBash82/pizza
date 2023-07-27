@@ -4,11 +4,16 @@ import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../hook'
 import { setParam } from '../redux/filter/filterSlice'
 import { fetchPizzas } from '../redux/pizza/asyncActions'
-import { Categories, categoriesName } from '../components/Cetegories'
-import { PizzaBlock } from '../components/PizzaBlock/PizzaBlock'
-import { Sort, sortList } from '../components/Sort'
-import { Skeleton } from '../components/Skeleton'
-import { Pagination } from '../components/Pagination/Pagination'
+
+import {
+  PizzaBlock,
+  Categories,
+  categoriesName,
+  Sort,
+  sortList,
+  Skeleton,
+  Pagination,
+} from '../components'
 
 export const Home: React.FC = () => {
   const dispatch = useAppDispatch()
