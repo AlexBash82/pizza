@@ -24,15 +24,29 @@ body {
   }
 
   &__items {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    //grid-template-rows: repeat(1, 1fr);
+    gap: 20px;
   }
 
   &__top {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    @media (max-width: 1290px) {
+      flex-direction: column-reverse;
+
+      .categories {
+        margin-top: 30px;
+      }
+    }
+  }
+
+  &__error-info {
+    margin: 60px auto;
+    text-align: center;
   }
 }
 
@@ -307,5 +321,27 @@ body {
       font-weight: 600;
       font-size: 18px;
     }
+  }
+}
+
+.disabled-minus {
+  opacity: 0.4;
+  border-color: #787878;
+  cursor: inherit;
+
+  &:active {
+    transform: none;
+  }
+
+  &:hover {
+    background-color: transparent;
+
+    svg path {
+      fill: #787878;
+    }
+  }
+
+  svg path {
+    fill: #787878;
   }
 }

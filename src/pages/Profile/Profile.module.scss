@@ -1,0 +1,28 @@
+.root {
+  display: flex;
+  justify-content: space-between;
+
+  &_image {
+    width: 40%;
+  }
+}
+
+.block {
+  width: 55%;
+
+  h1 {
+    text-align: center;
+    font-size: 45px;
+  }
+}
+
+.textBtn {
+  cursor: pointer;
+  //color: blue;
+}
+
+.active {
+  //color: blue;
+  cursor: auto;
+  text-decoration: underline blue;
+}

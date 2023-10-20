@@ -1,20 +1,38 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import { Link, useLocation } from 'react-router-dom'
 import logoSvg from '../assets/img/pizza-logo.svg'
+import { Search } from './Search/Search'
+import { cartSelector } from '../redux/cart/cartSlice'
 
-export const Header = () => {
+export const Header: React.FC = () => {
+  const location = useLocation()
+  const { totalCartItems, totalCartPrice, listCartPizzas } =
+    useSelector(cartSelector)
+
+  useEffect(() => {
+    if (listCartPizzas.length) {
+      const json = JSON.stringify(listCartPizzas)
+      localStorage.setItem('cart', json)
+    }
+  }, [listCartPizzas])
+
   return (
     <div className="header">
       <div className="container">
-        <div className="header__logo">
-          <img width="38" src={logoSvg} alt="Pizza logo" />
-          <div>
-            <h1>React Pizza</h1>
-            <p>самая вкусная пицца во всей вселенной</p>
+        <Link to="/">
+          <div className="header__logo">
+            <img width="38" src={logoSvg} alt="Pizza logo" />
+            <div>
+              <h1>React Pizza</h1>
+              <p>Пицца, которой равных в мире нет</p>
+            </div>
           </div>
-        </div>
+        </Link>
+        {location.pathname === '/' && <Search />}
         <div className="header__cart">
-          <a href="/cart.html" className="button button--cart">
-            <span>520 ₽</span>
+          <Link to="/cart" className="button button--cart">
+            <span>{totalCartPrice} ₽</span>
             <div className="button__delimiter"></div>
             <svg
               width="18"
@@ -45,8 +63,8 @@ export const Header = () => {
                 strokeLinejoin="round"
               />
             </svg>
-            <span>3</span>
-          </a>
+            <span>{totalCartItems}</span>
+          </Link>
         </div>
       </div>
     </div>
